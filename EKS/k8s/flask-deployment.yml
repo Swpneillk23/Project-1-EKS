@@ -1,0 +1,36 @@
+
+---
+apiversion: apps/v1
+kind: Deployment
+metadata: 
+  name: flask
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      matchLabels:
+        app: flask
+    spec:
+      containers:
+      - name: flask
+        image: swpneillk23/flask-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: Credentials
+              key: token
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
